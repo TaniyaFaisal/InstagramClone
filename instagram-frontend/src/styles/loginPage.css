@@ -1,0 +1,141 @@
+body{
+    background-color: #FAFAFA;
+}
+.loginPage_main{
+    display: flex;
+    margin-top: 5%;
+    margin-left: -65px;
+}
+
+.loginPage_logo{
+    width: 50%;
+    margin-top: 5%;
+}
+
+.loginPage_rightComp{
+    margin-top: 25px;
+    width: 100%;
+    border: 1px solid #DBDBDB;
+    text-align: center;
+    background-color: white;
+}
+.loginPage_signin{
+    margin-top: 5%;
+}
+.loginPage_textBox{
+    width: 250px;
+    height: 35px;
+    margin: 2%;
+    border: 1px solid #DBDBDB;
+    background-color: #FAFAFA;
+    padding-left: 10px;
+    border-radius: 3px;
+}
+
+.loginPage_button{
+    width: 275px;
+    height: 35px;
+    margin-top: 2%;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 1px solid #0395F6;
+    background-color: #0395F6;
+    color: white;
+}
+
+.loginPage_Ordivider{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.loginPage_divider{
+    width:100px;
+    height: 0px;
+    margin-top: 15px;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.loginPage_or{
+    font-size: small;
+    font-weight: bold;
+    margin: 5px 15px;
+    color: #8e8e8e;
+}
+
+.loginPage_fb{
+    color: #395185;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.loginPage_fbLogo{
+    margin-right: 15px;
+    width: 15px;
+}
+
+.loginPage_forgotPwd{
+    font-size: 12px;
+    line-height: 14px;
+    margin-top: 12px;
+    margin-bottom: 5%;
+    text-align: center;
+}
+
+.loginpage__signupoption {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height:65px;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #DBDBDB;
+    text-align: center;
+}
+.loginPage__signin{
+    margin-top: 20px;
+}
+.loginPage__signup {
+    margin-top: 20px;
+}
+.loginPage__downloadSection {
+    height: 105px;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+.loginPage__option {
+    margin-top: 20px;
+}
+
+.loginPage_span{
+    font-weight: bold;
+    color: #0395F6;
+}
+
+.loginPage_dwimg {
+    margin: 5px;
+}
+
+.loginPage_bottomComp{
+    color: #a3b0c4;
+    font-size: small;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 35px;
+}
+
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+    margin: 10px 10px 10px 10px;
+}
+
+.loginPage_links{
+    margin-bottom: 5px;
+}
+
+.loginPage_copyright{
+    margin-top: 15px;
+    margin-bottom: 8%;
+}
