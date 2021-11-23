@@ -1,0 +1,79 @@
+.statusBar_container{
+    height : 100px;
+    width: 600px;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    margin-top: 25px;
+    display: flex;
+    overflow-x: scroll;
+}
+
+.statusBar_container::-webkit-scrollbar{
+    display: none;
+}
+.statusBar_status{
+    margin: 15px 0px 0px 15px;
+}
+
+.statusBar_statusIcon{
+    min-width: 55px;
+    min-height: 55px;
+    border:3px solid #DF3968;
+}
+
+.statusBar_statusText{
+    font-size: small;
+    max-width: 65px;
+    overflow-x: hidden;
+    text-align: center;
+}
+
+.posts_container{
+    width: 600px;
+    border: 1px solid #dbdbdb;
+    margin-top: 25px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.posts_header{
+    height: 60px;
+    border-bottom: 1px solid #dbdbdb;
+    display: flex;
+}
+
+.posts_profileImg{
+    min-width: 30px;
+    min-height: 30px;
+    margin: 10px;
+}
+
+.posts_profileName{
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.posts_react{
+    margin: 5px;
+    width: 25px;
+    height: 25px;    
+}
+
+.posts_likes{
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.posts_comment{
+    margin-left: 10px;
+}
+
+.posts_addComment{
+    width:587px;
+    height: 55px;
+    border: 1px solid #dbdbdb;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    padding-left: 10px;
+}

@@ -1,16 +1,25 @@
 import React, { Component } from 'react'
 import Grid from '@material-ui/core/Grid';
-import inst_image from '../images/9364675fb26a.svg';
-import inst_logo from '../images/logoinsta.png';
-import fb from '../images/fb.png';
-import appstore from '../images/app.png';
-import playstore from '../images/play.png';
-import '../styles/loginPage.css';
+import inst_image from '../../images/9364675fb26a.svg';
+import inst_logo from '../../images/logoinsta.png';
+import appstore from '../../images/app.png';
+import playstore from '../../images/play.png';
+import '../../styles/loginPage.css';
+import SignIn from './signIn';
+import SignUp from './signUp';
 
 class LoginPage extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { isLogin : true};
+    }
+
+    changeLogin = () => {
+        if(this.state.isLogin){
+            this.setState({isLogin : false});
+        }else{
+            this.setState({isLogin : true});
+        }
     }
 
     render() {
@@ -21,36 +30,27 @@ class LoginPage extends Component {
                     <Grid item xs={6}>
                         <div className="loginPage_main">
                             <div>
-                               <img src={inst_image} width="454px" />
+                               <img src={inst_image} alt="Instagram UI" width="454px" />
                            </div>
                             <div>
                                 <div className="loginPage_rightComp">
-                                    <img src={inst_logo} className="loginPage_logo"></img>
+                                    <img src={inst_logo} alt="Instagram logo" className="loginPage_logo"></img>
                                     <div className="loginPage_signin">
-                                        <input className="loginPage_textBox" type="text" placeholder="Phone number, username, or email" />
-                                        <input className="loginPage_textBox" type="password" placeholder="Password" />
-                                        <button className="loginPage_button">Log In</button>
 
-                                        <div className="loginPage_Ordivider">
-                                            <div className="loginPage_divider"></div>
-                                            <div className="loginPage_or">OR</div>
-                                            <div className="loginPage_divider"></div>
-                                        </div>
-
-                                        <div className="loginPage_fb">
-                                            <img src={fb} className="loginPage_fbLogo"></img>
-                                            Log In with Facebook</div>
-                                        <div className="loginPage_forgotPwd">Forgot password?</div>
+                                        {this.state.isLogin ? <SignIn></SignIn> : <SignUp></SignUp>}
                                     </div>
 
                                 </div>
                                 <div className="loginpage__signupoption">
-                                    <div className="loginPage__signin">
-                                        Don't have an account? <span className="loginPage_span">Sign up</span>
-                                    </div>
-                                    {/* <div className="loginPage__signup">
-                                        Have an account? <span className="loginPage_span">Sign in</span>
-                                    </div> */}
+                                    {this.state.isLogin ?
+                                        <div className="loginPage__signin">
+                                            Don't have an account? <span onClick={this.changeLogin} className="loginPage_span">Sign up</span>
+                                        </div>
+                                    :
+                                        <div className="loginPage__signup">
+                                            Have an account? <span onClick={this.changeLogin} className="loginPage_span">Sign in</span>
+                                        </div>
+                                    }
                                 </div>
 
                                 <div className="loginPage__downloadSection">
@@ -58,8 +58,8 @@ class LoginPage extends Component {
                                         Get the app.
                                         </div>
                                     <div className="loginPage__option">
-                                        <img className="loginPage_dwimg" src={appstore} width="136px" />
-                                        <img className="loginPage_dwimg" src={playstore} width="136px" />
+                                        <img className="loginPage_dwimg" src={appstore} alt="App Store" width="136px" />
+                                        <img className="loginPage_dwimg" src={playstore} alt="Google Play" width="136px" />
                                     </div>
                                 </div>
                             </div>

@@ -1,0 +1,40 @@
+
+.navbar_barComp{
+    height: 55px;
+    background-color: white;
+    border: 1px solid #DBDBDB;
+}
+
+.navBar_instLogo{
+    width: 105px;
+    margin-top: 10px;
+}
+
+.navBar_search{
+    height: 30px;
+    width: 200px;
+    padding-left: 15px;
+    margin-top: 10px;
+    background-color: #fafafa;
+    border: 1px solid #DBDBDB;
+    border-radius: 3px;
+}
+
+.navBar_iconsGrp{
+    display: flex;
+}
+
+.navBar_icons{
+    width:25px;
+    margin: 15px 10px;
+}
+
+.navBar_iconsAvatar{
+    margin: 15px 10px;
+    max-width: 25px;
+    max-height: 25px;
+}
+
+body{
+    background-color: #fafafa;
+}

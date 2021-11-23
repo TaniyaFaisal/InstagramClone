@@ -1,11 +1,13 @@
-import logo from './logo.svg';
+import logo from './logo.png';
 import './App.css';
-import LoginPage from './components/loginPage';
+import LoginPage from './components/LoginComp/loginPage';
+import HomePage from './components/HomeComp/homePage';
 
 function App() {
   return (
     <div className="App">
-      <LoginPage></LoginPage>
+      {/* <LoginPage></LoginPage> */}
+      <HomePage></HomePage>
     </div>
   );
 }
