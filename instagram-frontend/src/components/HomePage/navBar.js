@@ -1,6 +1,6 @@
 import { Grid } from '@material-ui/core';
 import React, { Component } from 'react'
-import '../../styles/homePage.css';
+import '../../styles/navbar.css';
 import inst_logo from '../../images/logoinsta.png';
 import home from '../../images/home.svg';
 import message from '../../images/message.svg';
