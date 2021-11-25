@@ -1,5 +1,5 @@
 .posts_container{
-    width: 600px;
+    width: 615px;
     border: 1px solid #dbdbdb;
     margin-top: 25px;
     background-color: white;
@@ -39,7 +39,7 @@
 }
 
 .posts_addComment{
-    width:587px;
+    width:602px;
     height: 55px;
     border: 1px solid #dbdbdb;
     margin-top: 10px;

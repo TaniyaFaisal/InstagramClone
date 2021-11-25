@@ -25,7 +25,10 @@ class Suggestions extends Component{
                     <div className="suggest_content">
                         <div className="suggest_contentProfile">
                             <Avatar src={profileImg} className="suggest_contentImage"></Avatar>
-                            <div className="suggest_contentUsername" >Username</div>
+                            <div>
+                                <div className="suggest_contentUsername" >Username</div>    
+                                <div className="suggest_contentDesc" >Followed by taniya.faisal + 63 more</div>
+                            </div>
                         </div>
                         <div className="suggest_contentProfile">
                             <Avatar src={profileImg} className="suggest_contentImage"></Avatar>

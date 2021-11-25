@@ -51,7 +51,7 @@ class Posts extends Component{
                         <div className="posts_profileName">{this.props.username}</div>
                     </div>
                     <div>
-                        <img src={this.props.postImg} alt="Post" width="600px" height="600px"/>
+                        <img src={this.props.postImg} alt="Post" width="615px" height="600px"/>
                     </div>
                     <div>
                         <div style={{"marginLeft" : "5px"}}>
