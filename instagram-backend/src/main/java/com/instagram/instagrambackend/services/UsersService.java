@@ -12,7 +12,6 @@ public class UsersService {
 	@Autowired
 	UsersRepository usersRepository;
 	public Users submitUsersMetadata(Users users) {
-		System.out.println(users);
 		return usersRepository.save(users);
 	}
 	
