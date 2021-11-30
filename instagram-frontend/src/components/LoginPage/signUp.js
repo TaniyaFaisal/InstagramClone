@@ -1,11 +1,31 @@
 import React, { Component } from 'react'
 import '../../styles/loginPage.css';
 import fb from '../../images/fb.png';
-
+import {storage, auth} from '../firebase.js';
+import {createUserWithEmailAndPassword } from "firebase/auth";
 class SignUp extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            emailId : null,
+            name: null,
+            username: null,
+            password: null
+        };
+    }
+
+    signUp = () => {
+        createUserWithEmailAndPassword(auth, this.state.emailId, this.state.password)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+        });
     }
 
     render() {
@@ -25,11 +45,15 @@ class SignUp extends Component {
                     <div className="loginPage_divider"></div>
                 </div>
 
-                <input className="loginPage_textBox" type="text" placeholder="Mobile Number or Email" />
-                <input className="loginPage_textBox" type="text" placeholder="Full Name" />
-                <input className="loginPage_textBox" type="text" placeholder="Username" />
-                <input className="loginPage_textBox" type="password" placeholder="Password" />
-                <button className="loginPage_button">Sign Up</button>
+                <input className="loginPage_textBox" type="text" placeholder="Mobile Number or Email" 
+                        onChange={(event)=>{this.setState({emailId:event.currentTarget.value});}}/>
+                <input className="loginPage_textBox" type="text" placeholder="Full Name"
+                        onChange={(event)=>{this.setState({name:event.currentTarget.value});}}/>
+                <input className="loginPage_textBox" type="text" placeholder="Username"
+                        onChange={(event)=>{this.setState({username:event.currentTarget.value});}}/>
+                <input className="loginPage_textBox" type="password" placeholder="Password"
+                        onChange={(event)=>{this.setState({password:event.currentTarget.value});}}/>
+                <button className="loginPage_button" onClick={this.signUp}>Sign Up</button>
 
                 <div className="loginPage_signUpPolicyText">By signing up, you agree to our Terms, Data Policy <br/> and Cookie Policy.</div>
             </>

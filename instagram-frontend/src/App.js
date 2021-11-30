@@ -6,8 +6,8 @@ import HomePage from './components/HomePage/homePage';
 function App() {
   return (
     <div className="App">
-      {/* <LoginPage></LoginPage> */}
-      <HomePage></HomePage>
+      <LoginPage></LoginPage> 
+      {/* <HomePage></HomePage> */}
     </div>
   );
 }

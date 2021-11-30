@@ -1,19 +1,40 @@
 import React, { Component } from 'react'
 import '../../styles/loginPage.css';
 import fb from '../../images/fb.png';
+import {storage, auth} from '../firebase.js';
+import {signInWithEmailAndPassword } from "firebase/auth";
+
 
 class SignIn extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            emailId: null,
+            password: null
+        };
+    }
+
+    signIn = () => {
+        signInWithEmailAndPassword(auth, this.state.emailId, this.state.password)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        });
     }
 
     render() {
         return (
             <>
-                <input className="loginPage_textBox" type="text" placeholder="Phone number, username, or email" />
-                <input className="loginPage_textBox" type="password" placeholder="Password" />
-                <button className="loginPage_button">Log In</button>
+                <input className="loginPage_textBox" type="text" placeholder="Phone number, username, or email" 
+                        onChange={(event)=>{this.setState({emailId:event.currentTarget.value});}}/>
+                <input className="loginPage_textBox" type="password" placeholder="Password" 
+                        onChange={(event)=>{this.setState({password:event.currentTarget.value});}}/>
+                <button className="loginPage_button" onClick={this.signIn}>Log In</button>
 
                 <div className="loginPage_Ordivider">
                     <div className="loginPage_divider"></div>
