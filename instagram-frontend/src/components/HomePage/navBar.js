@@ -10,12 +10,17 @@ import find from '../../images/find.svg';
 import react from '../../images/love.svg';  
 import Avatar from '@material-ui/core/Avatar';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
+import {signOut } from "firebase/auth";
+import {auth} from '../firebase.js';
 
 class NavBar extends Component{
     constructor(props) {
         super(props);
         this.state = {
             progress :  "",
+            anchorEl : null,
         };
     }
 
@@ -105,7 +110,27 @@ class NavBar extends Component{
 
     }
 
+    signOut = () =>{
+        signOut(auth).then(() => {
+        // Sign-out successful.
+        localStorage.removeItem("users");
+        window.location.reload();
+        }).catch((error) => {
+        // An error happened.
+        });
+    }
+
+    handleClick = (event) => {
+        this.setState({anchorEl:event.currentTarget})
+    };
+
+    handleClose = () => {
+        this.setState({anchorEl:null})
+      };
+      
     render(){
+        const open = Boolean(this.state.anchorEl);
+        const id = open ? 'simple-popover' : undefined;
         return(
             <>
                 <div className="navbar_barComp">
@@ -132,7 +157,26 @@ class NavBar extends Component{
                                 alt="Remy Sharp"
                                 src={pp1}
                                 sx={{ width: 20, height: 20 }}
+                                onClick={this.signOut}
                             />
+                             <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={this.state.anchorEl}
+                                onClose={this.handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                  }}
+                                  transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                  }}
+                                  className="navbar_popover"
+                                  
+                            >
+                                <Typography className="navbar_popoverTypography">Logout</Typography>
+                            </Popover>
                         </Grid>
                         <Grid item xs={1}>
 
