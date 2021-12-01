@@ -1,6 +1,7 @@
 package com.instagram.instagrambackend.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,9 @@ public class PostService {
 	}
 
 	public ArrayList<Post> retrieveAllPost() {
-		return postRepository.findAll();
+		ArrayList<Post> postList = postRepository.findAll();
+		Collections.reverse(postList);
+		return postList;
 	}
 
 }

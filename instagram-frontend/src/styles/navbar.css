@@ -38,3 +38,12 @@
 body{
     background-color: #fafafa;
 }
+
+.navBar_post > input{
+    display: none;
+}
+
+.navBar_progress{
+    text-align: center;
+    margin-left: -425px;
+}

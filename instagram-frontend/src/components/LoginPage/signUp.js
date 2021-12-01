@@ -19,7 +19,28 @@ class SignUp extends Component {
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
-            // ...
+            let payload = {
+                "userId": user.uid,
+                "userName":this.state.username,
+                "name":this.state.name,
+                "profileImage":"www.google.com"
+            }
+
+            const requestOptions = {
+                method : "POST",
+                headers: {'Content-Type': 'application/json'},
+                body : JSON.stringify(payload), 
+            }
+
+            fetch("http://localhost:8081/api/v1/users/",requestOptions)
+            .then(response => response.json())
+            .then(data =>{
+                localStorage.setItem("users", JSON.stringify(user));
+                window.location.reload();
+            })
+            .catch(error =>{
+
+            })
         })
         .catch((error) => {
             const errorCode = error.code;

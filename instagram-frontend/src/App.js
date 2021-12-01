@@ -6,8 +6,10 @@ import HomePage from './components/HomePage/homePage';
 function App() {
   return (
     <div className="App">
-      <LoginPage></LoginPage> 
-      {/* <HomePage></HomePage> */}
+      {
+        (localStorage.getItem("users") == undefined || localStorage.getItem("users") == null) ?
+        <LoginPage/> : <HomePage/>
+      }
     </div>
   );
 }
