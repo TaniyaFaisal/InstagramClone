@@ -34,3 +34,7 @@
     overflow-x: hidden;
     text-align: center;
 }
+
+.statusBar_status > input{
+    display: none;
+}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import '../../styles/loginPage.css';
 import fb from '../../images/fb.png';
-import {storage, auth} from '../firebase.js';
+import {auth} from '../firebase.js';
 import {signInWithEmailAndPassword } from "firebase/auth";
 
 
@@ -24,8 +24,8 @@ class SignIn extends Component {
             
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
+            // const errorCode = error.code;
+            // const errorMessage = error.message;
         });
     }
 

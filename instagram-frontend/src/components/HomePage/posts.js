@@ -18,28 +18,47 @@ class Posts extends Component{
     }
 
     getData = () => {
-        let data = [
-            {
-                "username":"taniya.faisal",
-                "commentID":"111",
-                "timestamp":"12/10/2021",
-                "description":"Test Comment"
-            },
-            {
-                "username":"taniya_faisal",
-                "commentID":"111",
-                "timestamp":"12/10/2021",
-                "description":"Test Comment"
-            },
-            {
-                "username":"taniya._.faisal",
-                "commentID":"111",
-                "timestamp":"12/10/2021",
-                "description":"Test Comment"
-            },
-        ]
-        this.setState({commentList:data});
+        const thisContext = this;
+        fetch("http://localhost:8081/api/v1/comment/"+this.props.id)
+            .then(response => response.json())
+            .then(data =>{
+                thisContext.setState({commentList:data});
+            })
+            .catch(error =>{
 
+            });
+    }
+
+    submitComment = (event) => {
+        if(event.key === "Enter"){
+            let comment = event.currentTarget.value;
+            if(comment != null || comment !== undefined){
+                document.getElementById('commentBox').value = "";
+                let payload = {
+                    "commentID":this.props.id+Math.floor(Math.random()*1000).toString(),
+                    "userId":JSON.parse(localStorage.getItem("users")).uid,
+                    "postId":this.props.id,
+                    "timestamp":new Date().getTime(),
+                    "comment":comment
+                }
+
+                
+                const requestOptions = {
+                    method : "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body : JSON.stringify(payload), 
+                }
+    
+                fetch("http://localhost:8081/api/v1/comment/",requestOptions)
+                .then(response => response.json())
+                .then(data =>{
+                    this.getData();
+                })
+                .catch(error =>{
+    
+                })
+            }
+        }
     }
 
     render(){
@@ -68,11 +87,11 @@ class Posts extends Component{
                         {
                             this.state.commentList.map((item, index) => (
                                 <div className="posts_comment">
-                                    <b>{item.username}</b>:{item.description}
+                                    <b>{item.username}</b>:{item.comment}
                                 </div>
                             ))
                         }
-                        <input type="text" className="posts_addComment" placeholder="Add a comment..."></input>
+                        <input type="text" onKeyPress={this.submitComment} className="posts_addComment" placeholder="Add a comment..." id="commentBox"></input>
                     </div>
                 </div>
                 
