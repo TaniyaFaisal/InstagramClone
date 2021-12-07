@@ -41,7 +41,7 @@ class MainComp extends Component{
                                 this.state.postList.map((item, index) => (
                                     // <        id={item.id} username={item.username} profileImg={item.profileImg}
                                     // postImg={item.postImg} likes={item.likes}/>
-                                    <Posts id={item.postID} username={item.username}
+                                    <Posts id={item.postID} username={item.username} userImage={item.userImage}
                                     postImg={item.postPath} likes={item.likeCount}/>
                                 ))
                             }

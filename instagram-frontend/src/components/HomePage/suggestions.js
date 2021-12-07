@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import profileImg from '../../images/pp2.png';
+import github from '../../images/github.svg';
 import Avatar from '@material-ui/core/Avatar';
 import '../../styles/mainComp.css';
 
@@ -24,7 +25,7 @@ class Suggestions extends Component{
                     </div>
                     <div className="suggest_content">
                         <div className="suggest_contentProfile">
-                            <Avatar src={profileImg} className="suggest_contentImage"></Avatar>
+                            <Avatar src={github} className="suggest_contentImage"></Avatar>
                             <div>
                                 <div className="suggest_contentUsername" >Username</div>    
                                 <div className="suggest_contentDesc" >Followed by taniya.faisal + 63 more</div>

@@ -4,28 +4,14 @@ import '../../styles/statusBar.css';
 import postIcon from '../../images/pp2.png';
 import Badge from '@material-ui/core/Badge';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import Modal from '@material-ui/core/Modal';
 
 class StatusBar extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            statuslist : [            
-            {
-                "username":"taniya.faisal",
-                "path":"../../images/pp2.png"
-            },
-            {
-                "username":"taniya_faisal",
-                "path":"../../images/pp2.png"
-            },
-            {
-                "username":"taniya._.faisal",
-                "path":"../../images/pp2.png"
-            },
-            {
-                "username":"taniyafaisal",
-                "path":"../../images/pp2.png"
-            }]
+            statuslist : [],
+            open : false,
         };
     }
 
@@ -68,11 +54,15 @@ class StatusBar extends Component{
         //         "imageURL":"../../images/pp2.png"
         //     }
         // ]
+        const thisContext = this;
         fetch("http://localhost:8081/api/v1/status/")
             .then(response => response.json())
             .then(data => {
-                this.setState({statusList: data});
-        });
+                thisContext.setState({statuslist: data});
+            })
+            .catch(error =>{
+                console.log(error);
+            });;
     }
 
     uploadStatus = (event) =>{
@@ -159,6 +149,14 @@ class StatusBar extends Component{
 
     }
 
+    handleOpen = () => {
+        this.setState({open:true});
+      };
+    
+    handleClose = () => {
+        this.setState({open:false});
+      };
+
     render(){
         return(
             <>
@@ -178,8 +176,16 @@ class StatusBar extends Component{
                     {
                         this.state.statuslist.map((item, index) => (
                             <div className="statusBar_status">
-                                <Avatar src={item.path} alt="Status Icon" className="statusBar_statusIcon"></Avatar>
+                                <Avatar src={item.userImage} alt="Status Icon" className="statusBar_statusIcon" onClick={this.handleOpen}></Avatar>
                                 <div className="statusBar_statusText">{item.username}</div>
+                                <Modal className="statusBar_modal"
+                                    open={this.state.open}
+                                    onClose={this.handleClose}
+                                >
+                                    <div>
+                                        <img src ={item.path} alt = "Status" className = "statusBar_image"></img>
+                                    </div>
+                                </Modal>
                             </div>
                         ))
                     }

@@ -33,10 +33,15 @@
     margin: 15px 10px;
     max-width: 25px;
     max-height: 25px;
+    cursor: pointer;
 }
 
 body{
     background-color: #fafafa;
+}
+
+.navBar_postIcon{
+    cursor: pointer;
 }
 
 .navBar_post > input{
@@ -48,11 +53,11 @@ body{
     margin-left: -425px;
 }
 
-.navbar_popover{
-    width: 500px;
-    height: 100px;
-}
-
 .navbar_popoverTypography{
     padding: 5px 15px;
+    cursor: pointer;
+}
+
+.navBar_addProfileImage  > input{
+    display: none;
 }

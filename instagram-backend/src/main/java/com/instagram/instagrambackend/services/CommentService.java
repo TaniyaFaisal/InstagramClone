@@ -22,8 +22,8 @@ public class CommentService {
 		return commentRepository.save(comment);
 	}
 
-	public ArrayList<Comment> retrieveAllComment(String postId) {
-		return commentRepository.findAllByPostId(postId);
+	public ArrayList<Comment> retrieveAllComment(String userId) {
+		return commentRepository.findAllByPostId(userId);
 	}
 
 }

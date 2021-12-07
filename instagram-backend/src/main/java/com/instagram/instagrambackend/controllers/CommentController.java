@@ -27,9 +27,11 @@ public class CommentController {
 		return commentService.submitCommentData(comment);
 	}
 	
-	@GetMapping("/{postId}")
-	public ArrayList<Comment> getAllPost(@PathVariable("postId") String postId){
-		return commentService.retrieveAllComment(postId);
+	@GetMapping("/{userId}")
+	public ArrayList<Comment> getAllComments(@PathVariable("userId") String userId){
+		return commentService.retrieveAllComment(userId);
 	}
+	
+	
 
 }

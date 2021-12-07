@@ -18,6 +18,7 @@ public class Post {
 	private String userId;
 	private String postPath;
 	private String username;
+	private String userImage;
 	private Timestamp timestamp;
 	private Integer likeCount;
 	public Post() {
@@ -63,6 +64,12 @@ public class Post {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	public String getUserImage() {
+		return userImage;
+	}
+	public void setUserImage(String userImage) {
+		this.userImage = userImage;
+	}
 	public Timestamp getTimestamp() {
 		return timestamp;
 	}
@@ -78,7 +85,7 @@ public class Post {
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", postID=" + postID + ", userId=" + userId + ", postPath=" + postPath + ", username="
-				+ username + ", timestamp=" + timestamp + ", likeCount=" + likeCount + "]";
+				+ username + ", userImage=" + userImage + ", timestamp=" + timestamp + ", likeCount=" + likeCount + "]";
 	}
 	
 	

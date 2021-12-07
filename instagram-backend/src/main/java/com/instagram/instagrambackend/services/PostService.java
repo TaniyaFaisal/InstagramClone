@@ -20,6 +20,7 @@ public class PostService {
 
 	public Post submitPostData(Post post) {
 		post.setUsername(usersService.displayUsersMetadate(post.getUserId()).getUserName());
+		post.setUserImage(usersService.displayUsersMetadate(post.getUserId()).getProfileImage());
 		return postRepository.save(post);
 	}
 
@@ -27,6 +28,10 @@ public class PostService {
 		ArrayList<Post> postList = postRepository.findAll();
 		Collections.reverse(postList);
 		return postList;
+	}
+	
+	public ArrayList<Post> retrieveAllPosts(String userId) {
+		return postRepository.findAllByUserId(userId);
 	}
 
 }

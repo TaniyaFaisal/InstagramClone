@@ -12,5 +12,6 @@ public interface PostRepository extends CrudRepository<Post, Integer>{
 
 	Post save(Post post);
 	ArrayList<Post> findAll();
+	ArrayList<Post> findAllByUserId(String userId);
 }
 	

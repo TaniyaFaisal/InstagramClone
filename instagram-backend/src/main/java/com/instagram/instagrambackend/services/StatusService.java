@@ -19,6 +19,7 @@ public class StatusService {
 
 	public Status submitStatusData(Status status) {
 		status.setUsername(usersService.displayUsersMetadate(status.getUserId()).getUserName());
+		status.setUserImage(usersService.displayUsersMetadate(status.getUserId()).getProfileImage());
 		return statusRepository.save(status);
 	}
 	
@@ -29,4 +30,9 @@ public class StatusService {
 //		}
 		return list;
 	}
+	
+	public ArrayList<Status> retrieveAllStatus(String userId) {
+		return statusRepository.findAllByUserId(userId);
+	}
+
 }

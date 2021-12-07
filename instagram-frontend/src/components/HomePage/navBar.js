@@ -21,6 +21,7 @@ class NavBar extends Component{
         this.state = {
             progress :  "",
             anchorEl : null,
+            profileImage: pp1,
         };
     }
 
@@ -110,6 +111,90 @@ class NavBar extends Component{
 
     }
 
+    uploadProfileImage = (event) =>{
+        let file = event.target.files[0];
+        const thisContext = this;
+        if(file == null || file === undefined){
+            return;
+        }
+        const storage = getStorage();
+        const metadata = {
+            contentType: 'image/jpeg'
+        };
+        // Upload file and metadata to the object 'images/mountains.jpg'
+        const storageRef = ref(storage, 'profile/' + file.name);
+        const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on('state_changed',
+        (snapshot) => {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progressBar = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            thisContext.setState({progress:progressBar});
+            console.log('Upload is ' + progressBar + '% done');
+            switch (snapshot.state) {
+            case 'paused':
+                console.log('Upload is paused');
+                break;
+            case 'running':
+                console.log('Upload is running');
+                break;
+            default:
+                break;
+            }
+        }, 
+        (error) => {
+            // A full list of error codes is available at
+            // https://firebase.google.com/docs/storage/web/handle-errors
+            switch (error.code) {
+            case 'storage/unauthorized':
+                // User doesn't have permission to access the object
+                break;
+            case 'storage/canceled':
+                // User canceled the upload
+                break;
+
+            // ...
+
+            case 'storage/unknown':
+                // Unknown error occurred, inspect error.serverResponse
+                break;
+            default:
+                break;
+            }
+        }, 
+        () => {
+            // Upload completed successfully, now we can get the download URL
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                console.log('File available at', downloadURL);
+                console.log('------', JSON.parse(localStorage.getItem("users")).uid);
+                let payload = {
+                    "userId": JSON.parse(localStorage.getItem("users")).uid,
+                    "profileImage": downloadURL,
+                }
+
+                const requestOptions = {
+                    method : "PUT",
+                    headers: {"Content-Type": "application/json"},
+                    body : JSON.stringify(payload)
+                }
+
+                fetch("http://localhost:8081/api/v1/users/",requestOptions)
+                .then(response => response.json())
+                .then(data =>{
+                    this.setState({profileImage: data.profileImage})
+                    console.log(data);
+                })
+                .catch(error =>{
+
+                })
+            });
+        }
+        );
+
+    }
+
+
     signOut = () =>{
         signOut(auth).then(() => {
         // Sign-out successful.
@@ -148,16 +233,16 @@ class NavBar extends Component{
                             <img src={home} className="navBar_icons" alt="Home Icon"></img>
                             <img src={message} className="navBar_icons" alt="Message Icon"></img>
                             <div className = "navBar_post">
-                                <label for="file-upload"><img src={postIcon} className="navBar_icons" alt="Post Icon" height="23px"></img></label>
+                                <label for="file-upload"><img src={postIcon} className="navBar_icons navBar_postIcon" alt="Post Icon" height="23px"></img></label>
                                 <input id="file-upload" type="file" onChange={this.uploadImage}/>
                             </div>
                             <img src={find} className="navBar_icons" alt="Find Icon"></img>
                             <img src={react} className="navBar_icons" alt="Heart Icon"></img>
                             <Avatar className="navBar_iconsAvatar"
                                 alt="Remy Sharp"
-                                src={pp1}
+                                src={this.state.profileImage}
                                 sx={{ width: 20, height: 20 }}
-                                onClick={this.signOut}
+                                onClick={this.handleClick}
                             />
                              <Popover
                                 id={id}
@@ -175,7 +260,12 @@ class NavBar extends Component{
                                   className="navbar_popover"
                                   
                             >
-                                <Typography className="navbar_popoverTypography">Logout</Typography>
+                                <div className = "navBar_addProfileImage">
+                                    <label for="profile-upload"><Typography className="navbar_popoverTypography">Add profile image</Typography></label>
+                                    <input id="profile-upload" type="file" onChange={this.uploadProfileImage}/>
+                                </div>
+                                
+                                <Typography className="navbar_popoverTypography" onClick={this.signOut}>Logout</Typography>
                             </Popover>
                         </Grid>
                         <Grid item xs={1}>

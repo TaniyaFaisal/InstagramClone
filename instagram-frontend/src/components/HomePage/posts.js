@@ -62,11 +62,12 @@ class Posts extends Component{
     }
 
     render(){
+        console.log("POSTS SSS" +this.props.username +"    " +this.props.userImage);
         return(
             <>
                 <div className="posts_container">
                     <div className="posts_header">
-                        <Avatar src={this.props.profileImg} className="posts_profileImg"/>
+                        <Avatar src={this.props.userImage} className="posts_profileImg"/>
                         <div className="posts_profileName">{this.props.username}</div>
                     </div>
                     <div>

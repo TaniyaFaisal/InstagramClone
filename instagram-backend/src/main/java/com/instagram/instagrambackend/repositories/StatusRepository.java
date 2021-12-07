@@ -12,4 +12,5 @@ public interface StatusRepository  extends CrudRepository<Status, Integer>{
 
 	Status save(Status status);
 	ArrayList<Status> findAll();
+	ArrayList<Status> findAllByUserId(String userId);
 }

@@ -18,6 +18,7 @@ public class Status {
 	private String userId;
 	private String path;
 	private String username;
+	private String userImage;
 	private Timestamp timestamp;
 	public Status() {
 		super();
@@ -49,6 +50,12 @@ public class Status {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	public String getUserImage() {
+		return userImage;
+	}
+	public void setUserImage(String userImage) {
+		this.userImage = userImage;
+	}
 	public String getPath() {
 		return path;
 	}
@@ -71,6 +78,6 @@ public class Status {
 	@Override
 	public String toString() {
 		return "Status [id=" + id + ", statusID=" + statusID + ", userId=" + userId + ", path=" + path + ", username="
-				+ username + ", timestamp=" + timestamp + "]";
+				+ username + ", userImage=" + userImage + ", timestamp=" + timestamp + "]";
 	}
 }
