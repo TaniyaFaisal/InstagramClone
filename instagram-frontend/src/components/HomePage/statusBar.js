@@ -20,41 +20,10 @@ class StatusBar extends Component{
     }
 
     getData = () => {
-        // let data = [
-        //     {
-        //         "username":"taniya.faisal",
-        //         "imageURL":"../../images/pp2.png"
-        //     },
-        //     {
-        //         "username":"taniya_faisal",
-        //         "imageURL":"../../images/pp2.png"
-        //     },
-        //     {
-        //         "username":"taniya._.faisal",
-        //         "imageURL":"../../images/pp2.png"
-        //     },
-        //     {
-        //         "username":"taniyafaisal",
-        //         "imageURL":"../../images/pp2.png"
-        //     },
-        //     {
-        //         "username":"taniya.faisal",
-        //         "imageURL":"../../images/pp2.png"
-        //     },
-        //     {
-        //         "username":"taniya_faisal",
-        //         "imageURL":"../../images/pp2.png"
-        //     },
-        //     {
-        //         "username":"taniya._.faisal",
-        //         "imageURL":"../../images/pp2.png"
-        //     },
-        //     {
-        //         "username":"taniyafaisal",
-        //         "imageURL":"../../images/pp2.png"
-        //     }
-        // ]
         const thisContext = this;
+        const uid = JSON.parse(localStorage.getItem("users")).uid;
+        const uemail = JSON.parse(localStorage.getItem("users")).email; 
+        (uemail === "admin@gmail.com") ?
         fetch("http://localhost:8081/api/v1/status/")
             .then(response => response.json())
             .then(data => {
@@ -62,7 +31,16 @@ class StatusBar extends Component{
             })
             .catch(error =>{
                 console.log(error);
-            });;
+            })
+        :
+        fetch("http://localhost:8081/api/v1/status/"+uid)
+            .then(response => response.json())
+            .then(data => {
+                thisContext.setState({statuslist: data});
+            })
+            .catch(error =>{
+                console.log(error);
+            })
     }
 
     uploadStatus = (event) =>{
@@ -134,7 +112,7 @@ class StatusBar extends Component{
                     headers: {"Content-Type": "application/json"},
                     body : JSON.stringify(payload)
                 }
-
+                
                 fetch("http://localhost:8081/api/v1/status/",requestOptions)
                 .then(response => response.json())
                 .then(data =>{

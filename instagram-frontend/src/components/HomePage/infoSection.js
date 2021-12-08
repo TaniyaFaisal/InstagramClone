@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Avatar from '@material-ui/core/Avatar';
-import profileImg from '../../images/pp2.png';
+import profileImg from '../../images/Photo_TaniyaFaisal.jpg';
 import '../../styles/mainComp.css';
 
 class InfoSection extends Component{
@@ -8,7 +8,7 @@ class InfoSection extends Component{
         super(props);
         this.state = {
             
-        };
+        };  
     }
 
     componentDidMount(){
@@ -21,8 +21,8 @@ class InfoSection extends Component{
                 <div className="info_container">
                     <Avatar src={profileImg} className="info_profileImg"></Avatar>
                     <div>
-                        <div className="info_username">Username</div>
-                        <div className="info_desc">Description</div>
+                        <div className="info_username">Taniya Faisal</div>
+                        <div className="info_desc">Instagram Clone</div>
                     </div>
                 </div>
             </>

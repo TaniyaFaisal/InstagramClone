@@ -80,8 +80,6 @@ class NavBar extends Component{
         () => {
             // Upload completed successfully, now we can get the download URL
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                console.log('File available at', downloadURL);
-                console.log('------', JSON.parse(localStorage.getItem("users")).uid);
                 let payload = {
                     "postID":JSON.parse(localStorage.getItem("users")).uid+Math.floor(Math.random()*1000).toString(),
                     "userId": JSON.parse(localStorage.getItem("users")).uid,
@@ -182,7 +180,7 @@ class NavBar extends Component{
                 fetch("http://localhost:8081/api/v1/users/",requestOptions)
                 .then(response => response.json())
                 .then(data =>{
-                    this.setState({profileImage: data.profileImage})
+                    thisContext.setState({profileImage: data.profileImage})
                     console.log(data);
                 })
                 .catch(error =>{

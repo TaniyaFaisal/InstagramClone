@@ -19,6 +19,9 @@ class MainComp extends Component{
 
     getData = () => {
         const thisContext = this;
+        const uid = JSON.parse(localStorage.getItem("users")).uid;
+        const uemail = JSON.parse(localStorage.getItem("users")).email;
+        (uemail === "admin@gmail.com") ?
         fetch("http://localhost:8081/api/v1/post/")
             .then(response => response.json())
             .then(data =>{
@@ -26,7 +29,17 @@ class MainComp extends Component{
             })
             .catch(error =>{
 
+            })
+        :
+        fetch("http://localhost:8081/api/v1/post/" +uid)
+            .then(response => response.json())
+            .then(data =>{
+                thisContext.setState({postList:data});
+            })
+            .catch(error =>{
+
             });
+        
     }
 
     render(){
@@ -39,8 +52,6 @@ class MainComp extends Component{
                             <StatusBar/>
                             {
                                 this.state.postList.map((item, index) => (
-                                    // <        id={item.id} username={item.username} profileImg={item.profileImg}
-                                    // postImg={item.postImg} likes={item.likes}/>
                                     <Posts id={item.postID} username={item.username} userImage={item.userImage}
                                     postImg={item.postPath} likes={item.likeCount}/>
                                 ))
