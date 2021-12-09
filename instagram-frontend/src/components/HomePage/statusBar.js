@@ -151,6 +151,7 @@ class StatusBar extends Component{
                                         <img key={item.id} src ={item.path} alt = "Status" className ="statusBar_image"></img>
                                     </div>
                                 </Modal>
+                                
                             </div>
                         ))
                     }
