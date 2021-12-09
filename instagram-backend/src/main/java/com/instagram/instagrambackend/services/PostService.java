@@ -31,7 +31,9 @@ public class PostService {
 	}
 	
 	public ArrayList<Post> retrieveAllPosts(String userId) {
-		return postRepository.findAllByUserId(userId);
+		ArrayList<Post> postList = postRepository.findAllByUserId(userId);
+		Collections.reverse(postList);
+		return postList;
 	}
 
 }

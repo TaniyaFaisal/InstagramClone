@@ -17,7 +17,6 @@ class SignUp extends Component {
     signUp = () => {
         createUserWithEmailAndPassword(auth, this.state.emailId, this.state.password)
         .then((userCredential) => {
-            // Signed in 
             const user = userCredential.user;
             let payload = {
                 "userId": user.uid,
@@ -39,13 +38,11 @@ class SignUp extends Component {
                 window.location.reload();
             })
             .catch(error =>{
-
+                console.log("Error signing up user" +error);
             })
         })
         .catch((error) => {
-            // const errorCode = error.code;
-            // const errorMessage = error.message;
-            // ..
+            console.log("Error signing up " +error.code +" " +error.messsage);
         });
     }
 

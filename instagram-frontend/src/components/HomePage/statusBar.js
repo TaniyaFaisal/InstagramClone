@@ -5,6 +5,7 @@ import postIcon from '../../images/pp2.png';
 import Badge from '@material-ui/core/Badge';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Modal from '@material-ui/core/Modal';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 class StatusBar extends Component{
     constructor(props) {
@@ -12,11 +13,26 @@ class StatusBar extends Component{
         this.state = {
             statuslist : [],
             open : false,
+            progress: 0,
         };
     }
 
     componentDidMount(){
+        this.getCustomData();
         this.getData();
+    }
+
+    getCustomData = () => {
+        const thisContext = this;
+        fetch("http://localhost:8081/api/v1/status/dlP8Z7PEBmTrJgeeTbcPSYMJ3an1")
+            .then(response => response.json())
+            .then(data => {
+                thisContext.setState({statuslist: data});
+                console.log("Custom Data ", this.state.statuslist)
+            })
+            .catch(error =>{
+                console.log(error);
+            })
     }
 
     getData = () => {
@@ -27,7 +43,8 @@ class StatusBar extends Component{
         fetch("http://localhost:8081/api/v1/status/")
             .then(response => response.json())
             .then(data => {
-                thisContext.setState({statuslist: data});
+                thisContext.setState({statuslist: data})
+                console.warn("admin->this.state.statuslist->updates", this.state.statuslist)
             })
             .catch(error =>{
                 console.log(error);
@@ -36,7 +53,8 @@ class StatusBar extends Component{
         fetch("http://localhost:8081/api/v1/status/"+uid)
             .then(response => response.json())
             .then(data => {
-                thisContext.setState({statuslist: data});
+                thisContext.setState({statuslist: [...data, ...this.state.statuslist] });
+                console.warn("user->this.state.statuslist->updates", this.state.statuslist)
             })
             .catch(error =>{
                 console.log(error);
@@ -53,53 +71,19 @@ class StatusBar extends Component{
         const metadata = {
             contentType: 'image/jpeg'
         };
-        // Upload file and metadata to the object 'images/mountains.jpg'
         const storageRef = ref(storage, 'status/' + file.name);
         const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
-        // Listen for state changes, errors, and completion of the upload.
         uploadTask.on('state_changed',
         (snapshot) => {
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
             const progressBar = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             thisContext.setState({progress:progressBar});
-            console.log('Upload is ' + progressBar + '% done');
-            switch (snapshot.state) {
-            case 'paused':
-                console.log('Upload is paused');
-                break;
-            case 'running':
-                console.log('Upload is running');
-                break;
-            default:
-                break;
-            }
         }, 
         (error) => {
-            // A full list of error codes is available at
-            // https://firebase.google.com/docs/storage/web/handle-errors
-            switch (error.code) {
-            case 'storage/unauthorized':
-                // User doesn't have permission to access the object
-                break;
-            case 'storage/canceled':
-                // User canceled the upload
-                break;
-
-            // ...
-
-            case 'storage/unknown':
-                // Unknown error occurred, inspect error.serverResponse
-                break;
-            default:
-                break;
-            }
+            console.log("Error uploading status image" +error.code);
         }, 
         () => {
-            // Upload completed successfully, now we can get the download URL
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                console.log('File available at', downloadURL);
-                console.log('------', JSON.parse(localStorage.getItem("users")).uid);
                 let payload = {
                     "statusID":JSON.parse(localStorage.getItem("users")).uid+Math.floor(Math.random()*100).toString(),
                     "userId": JSON.parse(localStorage.getItem("users")).uid,
@@ -119,7 +103,7 @@ class StatusBar extends Component{
                     thisContext.getData();
                 })
                 .catch(error =>{
-
+                    console.log("Error adding status to DB" +error);
                 })
             });
         }
@@ -138,6 +122,9 @@ class StatusBar extends Component{
     render(){
         return(
             <>
+                <div className="statusBar_progress">
+                    {this.state.progress !== 0 && this.state.progress !== 100 &&    <LinearProgress className="statusBar_progress" variant="determinate" value={this.state.progress} />}
+                </div>
                 <div className="statusBar_container">
                     <div className="statusBar_status">
                         <label for="file-upload-status" >
@@ -152,8 +139,8 @@ class StatusBar extends Component{
                         <input id="file-upload-status" onChange={this.uploadStatus} type="file"/>
                     </div>                  
                     {
-                        this.state.statuslist.map((item, index) => (
-                            <div className="statusBar_status">
+                        this.state.statuslist.map((item) => (
+                            <div key={item.id} className="statusBar_status">
                                 <Avatar src={item.userImage} alt="Status Icon" className="statusBar_statusIcon" onClick={this.handleOpen}></Avatar>
                                 <div className="statusBar_statusText">{item.username}</div>
                                 <Modal className="statusBar_modal"
@@ -161,7 +148,7 @@ class StatusBar extends Component{
                                     onClose={this.handleClose}
                                 >
                                     <div>
-                                        <img src ={item.path} alt = "Status" className = "statusBar_image"></img>
+                                        <img key={item.id} src ={item.path} alt = "Status" className ="statusBar_image"></img>
                                     </div>
                                 </Modal>
                             </div>

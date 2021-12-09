@@ -7,214 +7,143 @@ import message from '../../images/message.svg';
 import postIcon from '../../images/add.svg';
 import pp1 from '../../images/pp2.png';
 import find from '../../images/find.svg';
-import react from '../../images/love.svg';  
+import react from '../../images/love.svg';
 import Avatar from '@material-ui/core/Avatar';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
-import {signOut } from "firebase/auth";
-import {auth} from '../firebase.js';
+import { signOut } from "firebase/auth";
+import { auth } from '../firebase.js';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
-class NavBar extends Component{
+class NavBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            progress :  "",
-            anchorEl : null,
+            progress: 0,
+            anchorEl: null,
             profileImage: pp1,
         };
     }
 
-    uploadImage = (event) =>{
+    uploadImage = (event) => {
         let file = event.target.files[0];
         const thisContext = this;
-        if(file == null || file === undefined){
+        if (file == null || file === undefined) {
             return;
         }
         const storage = getStorage();
         const metadata = {
             contentType: 'image/jpeg'
         };
-        // Upload file and metadata to the object 'images/mountains.jpg'
         const storageRef = ref(storage, 'images/' + file.name);
         const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-
-        // Listen for state changes, errors, and completion of the upload.
         uploadTask.on('state_changed',
-        (snapshot) => {
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            const progressBar = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            thisContext.setState({progress:progressBar});
-            console.log('Upload is ' + progressBar + '% done');
-            switch (snapshot.state) {
-            case 'paused':
-                console.log('Upload is paused');
-                break;
-            case 'running':
-                console.log('Upload is running');
-                break;
-            default:
-                break;
+            (snapshot) => {
+                const progressBar = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                thisContext.setState({ progress: progressBar });
+            },
+            (error) => {
+                console.log("Error uploading post image" + error.code);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    let payload = {
+                        "postID": JSON.parse(localStorage.getItem("users")).uid + Math.floor(Math.random() * 1000).toString(),
+                        "userId": JSON.parse(localStorage.getItem("users")).uid,
+                        "postPath": downloadURL,
+                        "timestamp": new Date().getTime(),
+                        "likeCount": 0
+                    }
+
+                    const requestOptions = {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    }
+
+                    fetch("http://localhost:8081/api/v1/post/", requestOptions)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            console.log("Error adding post to DB" + error)
+                        })
+                });
             }
-        }, 
-        (error) => {
-            // A full list of error codes is available at
-            // https://firebase.google.com/docs/storage/web/handle-errors
-            switch (error.code) {
-            case 'storage/unauthorized':
-                // User doesn't have permission to access the object
-                break;
-            case 'storage/canceled':
-                // User canceled the upload
-                break;
-
-            // ...
-
-            case 'storage/unknown':
-                // Unknown error occurred, inspect error.serverResponse
-                break;
-            default:
-                break;
-            }
-        }, 
-        () => {
-            // Upload completed successfully, now we can get the download URL
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                let payload = {
-                    "postID":JSON.parse(localStorage.getItem("users")).uid+Math.floor(Math.random()*1000).toString(),
-                    "userId": JSON.parse(localStorage.getItem("users")).uid,
-                    "postPath": downloadURL,
-                    "timestamp":new Date().getTime(),
-                    "likeCount":0
-                }
-
-                const requestOptions = {
-                    method : "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body : JSON.stringify(payload)
-                }
-
-                fetch("http://localhost:8081/api/v1/post/",requestOptions)
-                .then(response => response.json())
-                .then(data =>{
-                    console.log(data);
-                    window.location.reload();
-                })
-                .catch(error =>{
-
-                })
-            });
-        }
         );
 
     }
 
-    uploadProfileImage = (event) =>{
+    uploadProfileImage = (event) => {
         let file = event.target.files[0];
         const thisContext = this;
-        if(file == null || file === undefined){
+        if (file == null || file === undefined) {
             return;
         }
         const storage = getStorage();
         const metadata = {
             contentType: 'image/jpeg'
         };
-        // Upload file and metadata to the object 'images/mountains.jpg'
         const storageRef = ref(storage, 'profile/' + file.name);
         const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-
-        // Listen for state changes, errors, and completion of the upload.
         uploadTask.on('state_changed',
-        (snapshot) => {
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            const progressBar = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            thisContext.setState({progress:progressBar});
-            console.log('Upload is ' + progressBar + '% done');
-            switch (snapshot.state) {
-            case 'paused':
-                console.log('Upload is paused');
-                break;
-            case 'running':
-                console.log('Upload is running');
-                break;
-            default:
-                break;
+            (snapshot) => {
+                const progressBar = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                thisContext.setState({ progress: progressBar });
+            },
+            (error) => {
+                console.log("Error uploading profile image" + error.code);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    let payload = {
+                        "userId": JSON.parse(localStorage.getItem("users")).uid,
+                        "profileImage": downloadURL,
+                    }
+
+                    const requestOptions = {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    }
+
+                    fetch("http://localhost:8081/api/v1/users/", requestOptions)
+                        .then(response => response.json())
+                        .then(data => {
+                            thisContext.setState({ profileImage: data.profileImage })
+                        })
+                        .catch(error => {
+                            console.log("Error adding profile image to DB" + error);
+                        })
+                });
             }
-        }, 
-        (error) => {
-            // A full list of error codes is available at
-            // https://firebase.google.com/docs/storage/web/handle-errors
-            switch (error.code) {
-            case 'storage/unauthorized':
-                // User doesn't have permission to access the object
-                break;
-            case 'storage/canceled':
-                // User canceled the upload
-                break;
-
-            // ...
-
-            case 'storage/unknown':
-                // Unknown error occurred, inspect error.serverResponse
-                break;
-            default:
-                break;
-            }
-        }, 
-        () => {
-            // Upload completed successfully, now we can get the download URL
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                console.log('File available at', downloadURL);
-                console.log('------', JSON.parse(localStorage.getItem("users")).uid);
-                let payload = {
-                    "userId": JSON.parse(localStorage.getItem("users")).uid,
-                    "profileImage": downloadURL,
-                }
-
-                const requestOptions = {
-                    method : "PUT",
-                    headers: {"Content-Type": "application/json"},
-                    body : JSON.stringify(payload)
-                }
-
-                fetch("http://localhost:8081/api/v1/users/",requestOptions)
-                .then(response => response.json())
-                .then(data =>{
-                    thisContext.setState({profileImage: data.profileImage})
-                    console.log(data);
-                })
-                .catch(error =>{
-
-                })
-            });
-        }
         );
-
     }
 
-
-    signOut = () =>{
+    signOut = () => {
         signOut(auth).then(() => {
-        // Sign-out successful.
-        localStorage.removeItem("users");
-        window.location.reload();
+            localStorage.removeItem("users");
+            window.location.reload();
         }).catch((error) => {
-        // An error happened.
+            console.log("Error signing out" + error);
         });
     }
 
     handleClick = (event) => {
-        this.setState({anchorEl:event.currentTarget})
+        this.setState({ anchorEl: event.currentTarget })
     };
 
     handleClose = () => {
-        this.setState({anchorEl:null})
-      };
-      
-    render(){
+        this.setState({ anchorEl: null })
+    };
+
+    render() {
         const open = Boolean(this.state.anchorEl);
         const id = open ? 'simple-popover' : undefined;
-        return(
+        return (
             <>
                 <div className="navbar_barComp">
                     <Grid container>
@@ -230,9 +159,9 @@ class NavBar extends Component{
                         <Grid item xs={3} className="navBar_iconsGrp">
                             <img src={home} className="navBar_icons" alt="Home Icon"></img>
                             <img src={message} className="navBar_icons" alt="Message Icon"></img>
-                            <div className = "navBar_post">
+                            <div className="navBar_post">
                                 <label for="file-upload"><img src={postIcon} className="navBar_icons navBar_postIcon" alt="Post Icon" height="23px"></img></label>
-                                <input id="file-upload" type="file" onChange={this.uploadImage}/>
+                                <input id="file-upload" type="file" onChange={this.uploadImage} />
                             </div>
                             <img src={find} className="navBar_icons" alt="Find Icon"></img>
                             <img src={react} className="navBar_icons" alt="Heart Icon"></img>
@@ -242,7 +171,7 @@ class NavBar extends Component{
                                 sx={{ width: 20, height: 20 }}
                                 onClick={this.handleClick}
                             />
-                             <Popover
+                            <Popover
                                 id={id}
                                 open={open}
                                 anchorEl={this.state.anchorEl}
@@ -250,19 +179,19 @@ class NavBar extends Component{
                                 anchorOrigin={{
                                     vertical: 'bottom',
                                     horizontal: 'left',
-                                  }}
-                                  transformOrigin={{
+                                }}
+                                transformOrigin={{
                                     vertical: 'top',
                                     horizontal: 'left',
-                                  }}
-                                  className="navbar_popover"
-                                  
+                                }}
+                                className="navbar_popover"
+
                             >
-                                <div className = "navBar_addProfileImage">
+                                <div className="navBar_addProfileImage">
                                     <label for="profile-upload"><Typography className="navbar_popoverTypography">Add profile image</Typography></label>
-                                    <input id="profile-upload" type="file" onChange={this.uploadProfileImage}/>
+                                    <input id="profile-upload" type="file" onChange={this.uploadProfileImage} />
                                 </div>
-                                
+
                                 <Typography className="navbar_popoverTypography" onClick={this.signOut}>Logout</Typography>
                             </Popover>
                         </Grid>
@@ -272,7 +201,7 @@ class NavBar extends Component{
                     </Grid>
                 </div>
                 <div className="navBar_progress">
-                    {this.state.progress}
+                    {this.state.progress !== 0 && this.state.progress !== 100 && <LinearProgress className="statusBar_progress" variant="determinate" value={this.state.progress} />}
                 </div>
             </>
         );

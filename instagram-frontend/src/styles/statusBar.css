@@ -55,3 +55,8 @@
     margin-top: auto;
     margin-bottom: auto;
 }
+
+.statusBar_progress{
+    width: 615px;
+    text-align: center;
+}

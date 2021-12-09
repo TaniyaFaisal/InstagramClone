@@ -50,7 +50,8 @@ body{
 
 .navBar_progress{
     text-align: center;
-    margin-left: -425px;
+    width: 615px;
+    margin-left: 253px;
 }
 
 .navbar_popoverTypography{

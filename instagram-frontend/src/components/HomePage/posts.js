@@ -25,7 +25,7 @@ class Posts extends Component{
                 thisContext.setState({commentList:data});
             })
             .catch(error =>{
-
+                console.log("Error fetching comments " +error);
             });
     }
 
@@ -55,14 +55,13 @@ class Posts extends Component{
                     this.getData();
                 })
                 .catch(error =>{
-    
+                    console.log("Error posting comment " +error);
                 })
             }
         }
     }
 
     render(){
-        console.log("POSTS SSS" +this.props.username +"    " +this.props.userImage);
         return(
             <>
                 <div className="posts_container">
