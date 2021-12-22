@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import { signOut } from "firebase/auth";
 import { auth } from '../firebase.js';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import AlertMessage from '../AlertMessage.js';
 
 class NavBar extends Component {
     constructor(props) {
@@ -23,12 +24,15 @@ class NavBar extends Component {
             progress: 0,
             anchorEl: null,
             profileImage: pp1,
+            errorMessage: "",
+            displayAlert: false,
         };
     }
 
     uploadImage = (event) => {
-        let file = event.target.files[0];
         const thisContext = this;
+        thisContext.setState({displayAlert: false});
+        let file = event.target.files[0];
         if (file == null || file === undefined) {
             return;
         }
@@ -44,7 +48,8 @@ class NavBar extends Component {
                 thisContext.setState({ progress: progressBar });
             },
             (error) => {
-                console.log("Error uploading post image" + error.code);
+                thisContext.setState({ errorMessage: "An error occured. Please try again!"});
+                thisContext.setState({displayAlert: true});
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -53,7 +58,7 @@ class NavBar extends Component {
                         "userId": JSON.parse(localStorage.getItem("users")).uid,
                         "postPath": downloadURL,
                         "timestamp": new Date().getTime(),
-                        "likeCount": 0
+                        "likeCount": 123
                     }
 
                     const requestOptions = {
@@ -69,7 +74,8 @@ class NavBar extends Component {
                             window.location.reload();
                         })
                         .catch(error => {
-                            console.log("Error adding post to DB" + error)
+                            thisContext.setState({ errorMessage: "An error occured. Please try again!"});
+                            thisContext.setState({displayAlert: true});
                         })
                 });
             }
@@ -80,6 +86,7 @@ class NavBar extends Component {
     uploadProfileImage = (event) => {
         let file = event.target.files[0];
         const thisContext = this;
+        thisContext.setState({displayAlert: false});
         if (file == null || file === undefined) {
             return;
         }
@@ -95,7 +102,8 @@ class NavBar extends Component {
                 thisContext.setState({ progress: progressBar });
             },
             (error) => {
-                console.log("Error uploading profile image" + error.code);
+                thisContext.setState({ errorMessage: "An error occured. Please try again!"});
+                thisContext.setState({displayAlert: true});
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -116,7 +124,8 @@ class NavBar extends Component {
                             thisContext.setState({ profileImage: data.profileImage })
                         })
                         .catch(error => {
-                            console.log("Error adding profile image to DB" + error);
+                            thisContext.setState({ errorMessage: "An error occured. Please try again!"});
+                            thisContext.setState({displayAlert: true});
                         })
                 });
             }
@@ -143,24 +152,25 @@ class NavBar extends Component {
     render() {
         const open = Boolean(this.state.anchorEl);
         const id = open ? 'simple-popover' : undefined;
+        let errorMsg = this.state.errorMessage.toString();
         return (
             <>
-                <div className="navbar_barComp">
-                    <Grid container>
-                        <Grid item xs={2}>
+                <div className="navbar_barComp" id="navbar_barComp">
+                    <Grid container >
+                        <Grid item xs={2} id="navbar_hideComp1">
 
                         </Grid>
                         <Grid item xs={3}>
-                            <img src={inst_logo} className="navBar_instLogo" alt="Instagram Logo"></img>
+                            <img src={inst_logo} className="navBar_instLogo" alt="Instagram Logo" id="navBar_instLogo"></img>
                         </Grid>
                         <Grid item xs={3}>
                             <input type="text" className="navBar_search" placeholder="Search"></input>
                         </Grid>
-                        <Grid item xs={3} className="navBar_iconsGrp">
+                        <Grid item xs={3} className="navBar_iconsGrp" id="navBar_iconsGrp">
                             <img src={home} className="navBar_icons" alt="Home Icon"></img>
                             <img src={message} className="navBar_icons" alt="Message Icon"></img>
                             <div className="navBar_post">
-                                <label for="file-upload"><img src={postIcon} className="navBar_icons navBar_postIcon" alt="Post Icon" height="23px"></img></label>
+                                <label htmlFor="file-upload"><img src={postIcon} className="navBar_icons navBar_postIcon" alt="Post Icon" height="23px"></img></label>
                                 <input id="file-upload" type="file" onChange={this.uploadImage} />
                             </div>
                             <img src={find} className="navBar_icons" alt="Find Icon"></img>
@@ -188,7 +198,7 @@ class NavBar extends Component {
 
                             >
                                 <div className="navBar_addProfileImage">
-                                    <label for="profile-upload"><Typography className="navbar_popoverTypography">Add profile image</Typography></label>
+                                    <label htmlFor="profile-upload"><Typography className="navbar_popoverTypography">Add profile image</Typography></label>
                                     <input id="profile-upload" type="file" onChange={this.uploadProfileImage} />
                                 </div>
 
@@ -203,6 +213,8 @@ class NavBar extends Component {
                 <div className="navBar_progress">
                     {this.state.progress !== 0 && this.state.progress !== 100 && <LinearProgress className="statusBar_progress" variant="determinate" value={this.state.progress} />}
                 </div>
+
+                {this.state.displayAlert && <AlertMessage message = {errorMsg}/>}
             </>
         );
     }

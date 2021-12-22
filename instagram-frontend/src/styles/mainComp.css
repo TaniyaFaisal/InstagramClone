@@ -65,8 +65,29 @@
     color: #8e8e8e;
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 768px) {
     #suggestInfo {
        display: none;
+    }
+    #main_hideComp1{
+        display: none;
+    }
+    #main_hideComp2{
+        display: none;
+    }
+    #main_statusPost{
+        margin-left: 75px;  
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    #suggestInfo {
+        margin-left: 250px;
+    }
+     #main_hideComp1{
+        display: none;
+    }
+    #main_hideComp2{
+        display: none;
     }
 }

@@ -61,8 +61,8 @@ class MainComp extends Component {
             <>
                 <div>
                     <Grid container >
-                        <Grid item xs={2}></Grid>
-                        <Grid item xs={5} className="main_statusPost">
+                        <Grid item xs={2} id="main_hideComp1"></Grid>
+                        <Grid item xs={5} id="main_statusPost">
                             <StatusBar />
                             {
                                 this.state.postList.map((item) => (
@@ -77,7 +77,7 @@ class MainComp extends Component {
                                 <Suggestions />
                             </div>
                         </Grid>
-                        <Grid item xs={2}></Grid>
+                        <Grid item xs={2}id="main_hideComp2"></Grid>
                     </Grid>
                 </div>
             </>

@@ -11,27 +11,27 @@ import SignUp from './signUp';
 class LoginPage extends Component {
     constructor(props) {
         super(props);
-        this.state = { isLogin : true};
+        this.state = { isLogin: true };
     }
 
     changeLogin = () => {
-        if(this.state.isLogin){
-            this.setState({isLogin : false});
-        }else{
-            this.setState({isLogin : true});
+        if (this.state.isLogin) {
+            this.setState({ isLogin: false });
+        } else {
+            this.setState({ isLogin: true });
         }
     }
 
     render() {
         return (
-            <div    >
+            <div>
                 <Grid container>
-                    <Grid item xs={3}></Grid>
-                    <Grid item xs={6}>
-                        <div className="loginPage_main">
-                            <div>
-                               <img src={inst_image} alt="Instagram UI" width="454px" />
-                           </div>
+                    <Grid item xs={3} id="loginPage_hideComp1"></Grid>
+                    <Grid item xs={6} id="loginPage_main">
+                        <div className="loginPage_main" >
+                            <div id="loginPage_Image">
+                                <img src={inst_image} alt="Instagram UI" className="loginPage_image" id="loginPage_image"/>
+                            </div>
                             <div>
                                 <div className="loginPage_rightComp">
                                     <img src={inst_logo} alt="Instagram logo" className="loginPage_logo"></img>
@@ -46,7 +46,7 @@ class LoginPage extends Component {
                                         <div className="loginPage__signin">
                                             Don't have an account? <span onClick={this.changeLogin} className="loginPage_span">Sign up</span>
                                         </div>
-                                    :
+                                        :
                                         <div className="loginPage__signup">
                                             Have an account? <span onClick={this.changeLogin} className="loginPage_span">Sign in</span>
                                         </div>
@@ -64,7 +64,7 @@ class LoginPage extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="loginPage_bottomComp">
+                        <div className="loginPage_bottomComp" id="loginPage_bottomComp">
                             <div className="loginPage_links">
                                 <a href="https://about.facebook.com/meta">Meta</a>
                                 <a href="https://about.instagram.com/">About</a>
@@ -89,12 +89,12 @@ class LoginPage extends Component {
                                 <a href="https://www.instagram.com/topics/visual-arts/">Visual Arts</a>
                             </div>
                             <div className="loginPage_copyright">
-                                English (UK) &nbsp;&nbsp;&nbsp;&nbsp; © 2021 Instagram from Meta || Clone by Taniya Faisal                                 
+                                English (UK) &nbsp;&nbsp;&nbsp;&nbsp; © 2021 Instagram from Meta || Clone by Taniya Faisal
                             </div>
                         </div>
-                        
+
                     </Grid>
-                    <Grid item xs={3}></Grid>
+                    <Grid item xs={3} id="loginPage_hideComp2"></Grid>
                 </Grid>
             </div>
         );

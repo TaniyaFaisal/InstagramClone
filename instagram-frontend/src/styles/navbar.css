@@ -62,3 +62,19 @@ body{
 .navBar_addProfileImage  > input{
     display: none;
 }
+
+@media only screen and (max-width: 768px) {
+    #navbar_barComp{
+        width: 768px;
+    }
+    #navbar_hideComp1{
+        display: none;
+    }
+    #navBar_iconsGrp{
+        margin-left: 50px;
+    }
+    #navBar_instLogo{
+        margin-left: 15px;
+    }
+
+}

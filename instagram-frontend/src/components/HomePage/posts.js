@@ -5,11 +5,15 @@ import heart from '../../images/love.svg';
 import comment from '../../images/comment.svg';
 import share from '../../images/share.svg';
 import save from '../../images/save.svg';
+import AlertMessage from '../AlertMessage.js';
+
 class Posts extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            commentList:[]
+            commentList:[],
+            errorMessage: "",
+            displayAlert: false,
         };
     }
 
@@ -30,6 +34,8 @@ class Posts extends Component{
     }
 
     submitComment = (event) => {
+        const thisContext = this;
+        thisContext.setState({displayAlert: false});
         if(event.key === "Enter"){
             let comment = event.currentTarget.value;
             if(comment != null || comment !== undefined){
@@ -55,13 +61,15 @@ class Posts extends Component{
                     this.getData();
                 })
                 .catch(error =>{
-                    console.log("Error posting comment " +error);
+                    thisContext.setState({ errorMessage: "An error occured. Please try again!"});
+                    thisContext.setState({displayAlert: true});
                 })
             }
         }
     }
 
     render(){
+        let errorMsg = this.state.errorMessage.toString();
         return(
             <>
                 <div className="posts_container">
@@ -94,7 +102,7 @@ class Posts extends Component{
                         <input type="text" onKeyPress={this.submitComment} className="posts_addComment" placeholder="Add a comment..." id="commentBox"></input>
                     </div>
                 </div>
-                
+                {this.state.displayAlert && <AlertMessage message = {errorMsg}/>}
             </>
         );
     }

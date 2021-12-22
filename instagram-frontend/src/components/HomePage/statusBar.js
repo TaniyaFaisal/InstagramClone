@@ -6,6 +6,7 @@ import Badge from '@material-ui/core/Badge';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Modal from '@material-ui/core/Modal';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import AlertMessage from '../AlertMessage.js';
 
 class StatusBar extends Component{
     constructor(props) {
@@ -14,6 +15,10 @@ class StatusBar extends Component{
             statuslist : [],
             open : false,
             progress: 0,
+            modalImagePath:'',
+            errorMessage: "",
+            displayAlert: false,
+
         };
     }
 
@@ -28,7 +33,6 @@ class StatusBar extends Component{
             .then(response => response.json())
             .then(data => {
                 thisContext.setState({statuslist: data});
-                console.log("Custom Data ", this.state.statuslist)
             })
             .catch(error =>{
                 console.log(error);
@@ -44,7 +48,6 @@ class StatusBar extends Component{
             .then(response => response.json())
             .then(data => {
                 thisContext.setState({statuslist: data})
-                console.warn("admin->this.state.statuslist->updates", this.state.statuslist)
             })
             .catch(error =>{
                 console.log(error);
@@ -54,7 +57,6 @@ class StatusBar extends Component{
             .then(response => response.json())
             .then(data => {
                 thisContext.setState({statuslist: [...data, ...this.state.statuslist] });
-                console.warn("user->this.state.statuslist->updates", this.state.statuslist)
             })
             .catch(error =>{
                 console.log(error);
@@ -64,6 +66,8 @@ class StatusBar extends Component{
     uploadStatus = (event) =>{
         let file = event.target.files[0];
         const thisContext = this;
+        thisContext.setState({displayAlert: false});
+
         if(file == null || file === undefined){
             return;
         }
@@ -80,7 +84,8 @@ class StatusBar extends Component{
             thisContext.setState({progress:progressBar});
         }, 
         (error) => {
-            console.log("Error uploading status image" +error.code);
+            thisContext.setState({ errorMessage: "An error occured. Please try again!"});
+            thisContext.setState({displayAlert: true});
         }, 
         () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -103,7 +108,8 @@ class StatusBar extends Component{
                     thisContext.getData();
                 })
                 .catch(error =>{
-                    console.log("Error adding status to DB" +error);
+                    thisContext.setState({ errorMessage: "An error occured. Please try again!"});
+                    thisContext.setState({displayAlert: true});
                 })
             });
         }
@@ -111,8 +117,8 @@ class StatusBar extends Component{
 
     }
 
-    handleOpen = () => {
-        this.setState({open:true});
+    handleOpen = (path) => {
+        this.setState({open:true,modalImagePath:path});
       };
     
     handleClose = () => {
@@ -120,6 +126,7 @@ class StatusBar extends Component{
       };
 
     render(){
+        let errorMsg = this.state.errorMessage.toString();
         return(
             <>
                 <div className="statusBar_progress">
@@ -127,7 +134,7 @@ class StatusBar extends Component{
                 </div>
                 <div className="statusBar_container">
                     <div className="statusBar_status">
-                        <label for="file-upload-status" >
+                        <label htmlFor="file-upload-status" >
                             <Badge badgeContent="+" color="secondary" 
                                 overlap="circular" 
                                 anchorOrigin={{vertical: 'bottom', horizontal: 'right',}}
@@ -139,24 +146,25 @@ class StatusBar extends Component{
                         <input id="file-upload-status" onChange={this.uploadStatus} type="file"/>
                     </div>                  
                     {
-                        this.state.statuslist.map((item) => (
-                            <div key={item.id} className="statusBar_status">
-                                <Avatar src={item.userImage} alt="Status Icon" className="statusBar_statusIcon" onClick={this.handleOpen}></Avatar>
+                        this.state.statuslist.map((item, index) => (
+                            <div className="statusBar_status" key={index+1}>
+                                <Avatar src={item.userImage} alt="Status Icon" className="statusBar_statusIcon" onClick={()=>this.handleOpen(item.path)}></Avatar>
                                 <div className="statusBar_statusText">{item.username}</div>
                                 <Modal className="statusBar_modal"
                                     open={this.state.open}
                                     onClose={this.handleClose}
                                 >
                                     <div>
-                                        <img key={item.id} src ={item.path} alt = "Status" className ="statusBar_image"></img>
+                                        <img  src ={this.state.modalImagePath} alt = "Status" className ="statusBar_image"></img>
                                     </div>
                                 </Modal>
-                                
+
                             </div>
                         ))
                     }
                     
                 </div>
+                {this.state.displayAlert && <AlertMessage message = {errorMsg}/>}
             </>
         );
     }
