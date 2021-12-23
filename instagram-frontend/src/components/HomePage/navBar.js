@@ -53,6 +53,7 @@ class NavBar extends Component {
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log("Download URL" +downloadURL)
                     let payload = {
                         "postID": JSON.parse(localStorage.getItem("users")).uid + Math.floor(Math.random() * 1000).toString(),
                         "userId": JSON.parse(localStorage.getItem("users")).uid,
@@ -60,7 +61,6 @@ class NavBar extends Component {
                         "timestamp": new Date().getTime(),
                         "likeCount": 123
                     }
-
                     const requestOptions = {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -70,7 +70,6 @@ class NavBar extends Component {
                     fetch("http://localhost:8081/api/v1/post/", requestOptions)
                         .then(response => response.json())
                         .then(data => {
-                            console.log(data);
                             window.location.reload();
                         })
                         .catch(error => {

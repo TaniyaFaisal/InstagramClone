@@ -148,7 +148,7 @@ class StatusBar extends Component{
                     {
                         this.state.statuslist.map((item, index) => (
                             <div className="statusBar_status" key={index+1}>
-                                <Avatar src={item.userImage} alt="Status Icon" className="statusBar_statusIcon" onClick={()=>this.handleOpen(item.path)}></Avatar>
+                                <Avatar src={item.userImage} alt={item.username} className="statusBar_statusIcon" onClick={()=>this.handleOpen(item.path)}></Avatar>
                                 <div className="statusBar_statusText">{item.username}</div>
                                 <Modal className="statusBar_modal"
                                     open={this.state.open}

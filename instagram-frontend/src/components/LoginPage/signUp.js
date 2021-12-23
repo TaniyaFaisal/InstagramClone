@@ -74,14 +74,14 @@ class SignUp extends Component {
                     <div className="loginPage_divider"></div>
                 </div>
                 <form onSubmit={this.signUp}>
-                    <input className="loginPage_textBox" type="text" placeholder="Mobile Number or Email" 
+                    <input className="loginPage_textBox" type="text" placeholder="Email" 
                             onChange={(event)=>{this.setState({emailId:event.currentTarget.value});}} required 
                             pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$"/>
                     <input className="loginPage_textBox" type="text" placeholder="Full Name"
                             onChange={(event)=>{this.setState({name:event.currentTarget.value});}} required/>
                     <input className="loginPage_textBox" type="text" placeholder="Username"
                             onChange={(event)=>{this.setState({username:event.currentTarget.value});}} required/>
-                    <input className="loginPage_textBox" type="password" placeholder="Password"
+                    <input className="loginPage_textBox" type="password" placeholder="Password (min length 6)"
                             onChange={(event)=>{this.setState({password:event.currentTarget.value});}} required minLength="6"/>
                             <br/>
                     <button className="loginPage_button">Sign Up</button>

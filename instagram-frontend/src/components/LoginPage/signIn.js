@@ -39,7 +39,7 @@ class SignIn extends Component {
         return (
             <>
                 <form  onSubmit={this.signIn}>
-                <input className="loginPage_textBox" type="text" placeholder="Phone number, username, or email" 
+                <input className="loginPage_textBox" type="text" placeholder="Email" 
                         onChange={(event)=>{this.setState({emailId:event.currentTarget.value});}} required/>
                 <input className="loginPage_textBox" type="password" placeholder="Password" 
                         onChange={(event)=>{this.setState({password:event.currentTarget.value});}} required/>

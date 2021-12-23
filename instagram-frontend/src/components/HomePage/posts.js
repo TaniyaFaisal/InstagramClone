@@ -74,7 +74,7 @@ class Posts extends Component{
             <>
                 <div className="posts_container">
                     <div className="posts_header">
-                        <Avatar src={this.props.userImage} className="posts_profileImg"/>
+                        <Avatar src={this.props.userImage} alt={this.props.username} className="posts_profileImg"/>
                         <div className="posts_profileName">{this.props.username}</div>
                     </div>
                     <div>
@@ -93,8 +93,8 @@ class Posts extends Component{
                     </div>
                     <div>
                         {
-                            this.state.commentList.map((item, index) => (
-                                <div className="posts_comment">
+                            this.state.commentList.map((item) => (
+                                <div className="posts_comment" key = {item.id} >
                                     <b>{item.username}</b>:{item.comment}
                                 </div>
                             ))
